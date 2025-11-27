@@ -1,4 +1,4 @@
-package com.example.webview
+package com.mobile.youtube
 
 import android.annotation.SuppressLint
 import android.os.Bundle
@@ -65,6 +65,12 @@ fun WebViewer(mUrl: String) {
                 activity.webView = this
                 setLayerType(View.LAYER_TYPE_HARDWARE, null)
                 webViewClient = WebViewClient()
+
+                layoutParams = ViewGroup.LayoutParams(
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.MATCH_PARENT
+                )
+
                 webChromeClient = object : WebChromeClient() {
                     private var customView: View? = null
                     private var customViewCallback: CustomViewCallback? = null
@@ -78,7 +84,10 @@ fun WebViewer(mUrl: String) {
                         customViewCallback = callback
                         activity.windowInsetsController.hide(WindowInsetsCompat.Type.systemBars())
                         activity.window.decorView.let { decorView ->
-                            (decorView as ViewGroup).addView(view, ViewGroup.LayoutParams.MATCH_PARENT)
+                            (decorView as ViewGroup).addView(view, ViewGroup.LayoutParams(
+                                ViewGroup.LayoutParams.MATCH_PARENT,
+                                ViewGroup.LayoutParams.MATCH_PARENT
+                            ))
                         }
                     }
 
@@ -96,18 +105,20 @@ fun WebViewer(mUrl: String) {
                 }
 
                 settings.apply {
-                    layoutParams = ViewGroup.LayoutParams(
-                        ViewGroup.LayoutParams.MATCH_PARENT,
-                        ViewGroup.LayoutParams.MATCH_PARENT
-                    )
                     javaScriptEnabled = true
                     domStorageEnabled = true
+                    databaseEnabled = true
+                    cacheMode = WebSettings.LOAD_DEFAULT
+                    useWideViewPort = true
+                    loadWithOverviewMode = true
+                    javaScriptCanOpenWindowsAutomatically = true
+                    allowContentAccess = true
+                    allowFileAccess = true
+                    loadsImagesAutomatically = true
                     mediaPlaybackRequiresUserGesture = false
                     builtInZoomControls = false
                     displayZoomControls = false
                     setSupportZoom(false)
-                    loadWithOverviewMode = true
-                    useWideViewPort = true
                     mixedContentMode = WebSettings.MIXED_CONTENT_COMPATIBILITY_MODE
                 }
 
