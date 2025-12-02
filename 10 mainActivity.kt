@@ -326,6 +326,21 @@ fun WebViewWrapper(targetUrl: String) {
         update = { webView.loadUrl(targetUrl) }
     )
 
+    DisposableEffect(Unit) {
+        onDispose {
+            try {
+                webView.apply {
+                    loadUrl("about:blank")
+                    stopLoading()
+                    clearHistory()
+                    removeAllViews()
+                    destroy()
+                }
+            } catch (e: Exception) {
+            }
+        }
+    }
+
     BackHandler(enabled = true) {
         if (webView.canGoBack()) webView.goBack()
         else activity.finish()
