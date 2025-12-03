@@ -164,26 +164,20 @@ fun WebViewWrapper(targetUrl: String) {
                 javaScriptEnabled = true
                 domStorageEnabled = true
                 cacheMode = WebSettings.LOAD_DEFAULT
-
                 mixedContentMode = WebSettings.MIXED_CONTENT_ALWAYS_ALLOW
                 loadsImagesAutomatically = true
-
                 useWideViewPort = true
                 loadWithOverviewMode = true
-
                 setSupportZoom(true)
                 builtInZoomControls = true
                 displayZoomControls = false
-
                 mediaPlaybackRequiresUserGesture = false
                 javaScriptCanOpenWindowsAutomatically = true
                 allowFileAccess = true
                 allowContentAccess = true
                 setSupportMultipleWindows(true)
-
                 setGeolocationEnabled(true)
                 blockNetworkLoads = false
-
                 userAgentString = "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Mobile Safari/537.36"
             }
 
@@ -316,6 +310,9 @@ fun WebViewWrapper(targetUrl: String) {
                 setOnRefreshListener {
                     isRefreshing = true
                     webView.reload()
+                }
+                setOnChildScrollUpCallback { parent, child ->
+                    webView.scrollY > 0
                 }
             }
             val container = FrameLayout(ctx).apply {
