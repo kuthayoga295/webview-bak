@@ -177,6 +177,8 @@ fun WebViewWrapper(targetUrl: String) {
                 allowContentAccess = true
                 setSupportMultipleWindows(true)
                 setGeolocationEnabled(true)
+                isVerticalScrollBarEnabled = false
+                isHorizontalScrollBarEnabled = false
                 blockNetworkLoads = false
                 userAgentString = "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Mobile Safari/537.36"
             }
@@ -307,12 +309,17 @@ fun WebViewWrapper(targetUrl: String) {
         modifier = Modifier.fillMaxSize(),
         factory = { ctx ->
             val swipe = SwipeRefreshLayout(ctx).apply {
+                val metrics = ctx.resources.displayMetrics
+                val screenHeightPx = metrics.heightPixels
+                val top20PercentPx = (screenHeightPx * 0.25).toInt()
+                setProgressViewEndTarget(false, top20PercentPx)
+                setDistanceToTriggerSync(top20PercentPx)
+                setOnChildScrollUpCallback { parent, child ->
+                    webView.scrollY > 0
+                }
                 setOnRefreshListener {
                     isRefreshing = true
                     webView.reload()
-                }
-                setOnChildScrollUpCallback { parent, child ->
-                    webView.scrollY > 0
                 }
             }
             val container = FrameLayout(ctx).apply {
