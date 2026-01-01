@@ -49,7 +49,7 @@ class MainActivity : ComponentActivity() {
             YoutubeTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                     WebViewWrapper(
-                        targetUrl = "https://google.com",
+                        targetUrl = "https://youtube.com",
                         modifier = Modifier.fillMaxSize().padding(innerPadding)
                     )
                 }
@@ -131,10 +131,10 @@ fun WebViewWrapper(targetUrl: String, modifier: Modifier = Modifier) {
                 builtInZoomControls = false
                 displayZoomControls = false
                 mediaPlaybackRequiresUserGesture = false
-                javaScriptCanOpenWindowsAutomatically = true
+                javaScriptCanOpenWindowsAutomatically = false
                 allowFileAccess = true
                 allowContentAccess = true
-                setSupportMultipleWindows(true)
+                setSupportMultipleWindows(false)
                 isVerticalScrollBarEnabled = false
                 isHorizontalScrollBarEnabled = false
                 scrollBarStyle = View.SCROLLBARS_INSIDE_OVERLAY
@@ -150,7 +150,6 @@ fun WebViewWrapper(targetUrl: String, modifier: Modifier = Modifier) {
                 try {
                     val request = DownloadManager.Request(url.toUri())
                     val fileName = URLUtil.guessFileName(url, contentDisposition, mimeType)
-
                     request.setTitle(fileName)
                     request.setDescription("Downloading file…")
                     request.setMimeType(mimeType)
