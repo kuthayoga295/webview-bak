@@ -55,23 +55,23 @@ class MainActivity : ComponentActivity() {
 @SuppressLint("SetJavaScriptEnabled", "NewApi")
 @Composable
 fun MainWrapper(modifier: Modifier = Modifier) {
-    val targetUrl = "https://simrs.rsupermatahati.id"
+    val targetUrl = "https://online.rsupermatahati.id"
     val context = LocalContext.current
     val activity = context as? Activity ?: return
-    
+
     var customView by remember { mutableStateOf<View?>(null) }
     var customViewCallback by remember { mutableStateOf<WebChromeClient.CustomViewCallback?>(null) }
-    
+
     val windowDecorView = remember { activity.window.decorView as FrameLayout }
     val windowInsetsController = remember {WindowCompat.getInsetsController(activity.window, windowDecorView) }
-    
+
     var isLoading by remember { mutableStateOf(true) }
     var progress by remember { mutableFloatStateOf(0f) }
-    
+
     var pendingPermissionRequest by remember { mutableStateOf<PermissionRequest?>(null) }
     var pendingGeoCallback by remember { mutableStateOf<GeolocationPermissions.Callback?>(null) }
     var pendingGeoOrigin by remember { mutableStateOf<String?>(null) }
-    
+
     val permissionLauncher = rememberLauncherForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { results ->
         val granted = results.values.all { it }
         pendingPermissionRequest?.let {
@@ -174,11 +174,11 @@ fun MainWrapper(modifier: Modifier = Modifier) {
                 override fun onPageStarted(view: WebView?, url: String?, favicon: Bitmap?) {
                     isLoading = true
                 }
-                
+
                 override fun onPageFinished(view: WebView?, url: String?) {
                     isLoading = false
                 }
-                
+
                 override fun shouldOverrideUrlLoading(view: WebView?, request: WebResourceRequest?): Boolean {
                     val webView = view ?: return false
                     val uri = request?.url ?: return false
@@ -226,7 +226,7 @@ fun MainWrapper(modifier: Modifier = Modifier) {
                 override fun onProgressChanged(view: WebView?, newProgress: Int) {
                     progress = newProgress / 100f
                 }
-                
+
                 override fun onPermissionRequest(request: PermissionRequest) {
                     val permissions = mutableListOf<String>()
                     request.resources.forEach {
@@ -317,12 +317,11 @@ fun MainWrapper(modifier: Modifier = Modifier) {
         }
     }
 
-    Box(modifier = modifier.fillMaxSize()) {
+    Box(modifier) {
         AndroidView(
             modifier = Modifier.fillMaxSize(),
             factory = { webView }
         )
-
         if (isLoading && customView == null) {
             LinearProgressIndicator(
                 progress = { progress },
