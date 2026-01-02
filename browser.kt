@@ -52,7 +52,7 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-@SuppressLint("SetJavaScriptEnabled", "NewApi")
+@SuppressLint("SetJavaScriptEnabled")
 @Composable
 fun MainWrapper(modifier: Modifier = Modifier) {
     val targetUrl = "https://online.rsupermatahati.id"
