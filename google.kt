@@ -251,13 +251,10 @@ fun WebViewWrapper(targetUrl: String, modifier: Modifier = Modifier) {
                     isUserGesture: Boolean,
                     resultMsg: Message?
                 ): Boolean {
-                    val newWebView = WebView(context).apply {
-                        settings.javaScriptEnabled = true
-                    }
-                    val transport = resultMsg?.obj as? WebView.WebViewTransport
-                    transport?.webView = newWebView
-                    resultMsg?.sendToTarget()
-                    return true
+                    val transport = resultMsg?.obj as? WebView.WebViewTransport ?: return false
+                    transport.webView = view
+                    resultMsg.sendToTarget()
+                    return false
                 }
 
                 override fun onShowFileChooser(
