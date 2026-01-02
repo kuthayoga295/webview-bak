@@ -57,7 +57,7 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun WebViewWrapper(targetUrl: String, modifier: Modifier = Modifier) {
     val context = LocalContext.current
-    val activity = context as ComponentActivity
+    val activity = context as? Activity ?: return
     var customView by remember { mutableStateOf<View?>(null) }
     var customViewCallback by remember { mutableStateOf<WebChromeClient.CustomViewCallback?>(null) }
     val windowDecorView = remember { activity.window.decorView as FrameLayout }
