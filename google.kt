@@ -36,11 +36,6 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import dev.android.youtube.ui.theme.YoutubeTheme
 
-private var pendingPermissionRequest: PermissionRequest? = null
-private var pendingGeoCallback: GeolocationPermissions.Callback? = null
-private var pendingGeoOrigin: String? = null
-
-
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -70,6 +65,10 @@ fun WebViewWrapper(targetUrl: String, modifier: Modifier = Modifier) {
     val windowInsetsController = remember {
         WindowCompat.getInsetsController(activity.window, windowDecorView)
     }
+
+    var pendingPermissionRequest by remember { mutableStateOf<PermissionRequest?>(null) }
+    var pendingGeoCallback by remember { mutableStateOf<GeolocationPermissions.Callback?>(null) }
+    var pendingGeoOrigin by remember { mutableStateOf<String?>(null) }
 
     val permissionLauncher = rememberLauncherForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { results ->
         val granted = results.values.all { it }
@@ -157,7 +156,8 @@ fun WebViewWrapper(targetUrl: String, modifier: Modifier = Modifier) {
                     request.setNotificationVisibility(
                         DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED
                     )
-                    request.setDestinationInExternalPublicDir(
+                    request.setDestinationInExternalFilesDir(
+                        context,
                         Environment.DIRECTORY_DOWNLOADS,
                         fileName
                     )
