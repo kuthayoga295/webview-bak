@@ -176,10 +176,14 @@ fun WebViewWrapper(targetUrl: String, modifier: Modifier = Modifier) {
                         try {
                             activity.startActivity(Intent.parseUri(uri.toString(), Intent.URI_INTENT_SCHEME))
                             return true
-                        } catch (_: Exception) {
-                            activity.startActivity(Intent(Intent.ACTION_VIEW, uri))
-                            return true
+                        } catch (_: ActivityNotFoundException) {
+                            val fallback = uri.getQueryParameter("browser_fallback_url")
+                            fallback?.let {
+                                activity.startActivity(Intent(Intent.ACTION_VIEW, it.toUri()))
+                            }
                         }
+                        activity.startActivity(Intent(Intent.ACTION_VIEW, uri))
+                        return true
                     }
                     val host = uri.host
                     val targetHost = targetUrl.toUri().host
