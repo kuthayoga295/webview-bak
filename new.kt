@@ -258,14 +258,14 @@ fun WebViewScreen(target: String, modifier: Modifier = Modifier) {
                             }
                         }
 
-                        override fun onCreateWindow(view: WebView?, isDialog: Boolean, isUserGesture: Boolean, resultMsg: Message?
-                        ): Boolean {
+                        override fun onCreateWindow(view: WebView?, isDialog: Boolean, isUserGesture: Boolean, resultMsg: Message?): Boolean {
                             val transport = resultMsg?.obj as? WebView.WebViewTransport ?: return false
                             val tempWebView = WebView(context).apply {
                                 webViewClient = object : WebViewClient() {
                                     override fun shouldOverrideUrlLoading(view: WebView?, request: WebResourceRequest?): Boolean {
-                                        val newUrl = request?.url.toString()
-                                        openInCustomTab(context, newUrl)
+                                        val uri = request?.url ?: return false
+                                        val urlString = uri.toString()
+                                        openInCustomTab(context, urlString)
                                         view?.destroy()
                                         return true
                                     }
