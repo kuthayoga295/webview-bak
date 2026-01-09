@@ -260,12 +260,6 @@ fun WebViewScreen(target: String, modifier: Modifier = Modifier) {
 
                         override fun onCreateWindow(view: WebView?, isDialog: Boolean, isUserGesture: Boolean, resultMsg: Message?
                         ): Boolean {
-                            val result = view?.hitTestResult
-                            val url = result?.extra
-                            if (!url.isNullOrEmpty()) {
-                                openInCustomTab(context, url)
-                                return false
-                            }
                             val transport = resultMsg?.obj as? WebView.WebViewTransport ?: return false
                             val tempWebView = WebView(context).apply {
                                 webViewClient = object : WebViewClient() {
